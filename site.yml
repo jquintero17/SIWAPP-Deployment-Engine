@@ -4,7 +4,6 @@
 
 - name: Perform actions on all instances
   hosts: localhost
-  connection: local
 
   tasks:
   - name: Create a File for testing
