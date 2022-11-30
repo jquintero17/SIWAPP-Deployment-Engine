@@ -8,6 +8,6 @@
   tasks:
   - name: Create a File for testing
     ansible.builtin.file:
-      path: /root/foo.conf
+      path: .foo.conf
       state: touch
       mode: u=rw,g=r,o=r
