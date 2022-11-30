@@ -4,10 +4,6 @@
 
 - name: Perform actions on all instances
   hosts: localhost
-  remote_user: root
-  become: yes
-  become_method: sudo
-  gather_facts: True
   connection: local
 
   tasks:
