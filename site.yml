@@ -1,0 +1,17 @@
+# =========================================================
+#       PLAY -- DEPLOY TETRATION SENSORS and change root password
+# ---------------------------------------------------------
+
+- name: Perform actions on all instances
+  hosts: all
+  remote_user: root
+  become: yes
+  become_method: sudo
+  gather_facts: True
+
+  tasks:
+  - name: Create a File for testing
+    ansible.builtin.file:
+      path: /root/foo.conf
+      state: touch
+      mode: u=rw,g=r,o=r
