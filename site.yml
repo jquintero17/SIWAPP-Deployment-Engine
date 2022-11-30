@@ -8,6 +8,7 @@
   become: yes
   become_method: sudo
   gather_facts: True
+  connection: local
 
   tasks:
   - name: Create a File for testing
