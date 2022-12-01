@@ -6,7 +6,17 @@
   hosts: localhost
 
   tasks:
+  - name: Generate pet name with separator
+    ansible.builtin.set_fact:
+      dir_name: lookup('community.general.random_string')
+  
+  - name: Create a directory if it does not exist
+    ansible.builtin.file:
+      path: /root/{{ dir_name }}
+      state: directory
+      mode: '0755'
+
   - name: Using variable input to create terraform template file
     ansible.builtin.template:
       src: variables.j2
-      dest: variables.tf
+      dest: /root/{{ dir_name }}/variables.tf
