@@ -1,0 +1,18 @@
+plugin: vmware_vm_inventory
+strict: False
+hostname: vc01.tetlab.cpoc.co
+username: "{{ vuser }}"
+password: "{{ vpass }}"
+validate_certs: False
+with_nested_properties: true
+use_extra_vars: True
+with_tags: True
+hostnames:
+- config.name
+keyed_groups:
+- key: tags
+  prefix: "vm_tag_"
+  separator: ""
+filters:
+- "'siwapp' in tags"
+- "'jlunde-invoicing' in config.name"

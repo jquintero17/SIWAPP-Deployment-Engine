@@ -1,0 +1,12 @@
+# =========================================================
+#       PLAY -- Deploy SIWAPP somwhere
+# ---------------------------------------------------------
+
+- name: Setup Infra for Deployment
+  hosts: localhost
+
+  tasks:
+  - name: Using variable input to create terraform template file
+    ansible.builtin.template:
+      src: variables.j2
+      dest: variables.tf

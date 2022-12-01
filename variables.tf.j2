@@ -1,0 +1,149 @@
+variable "vcenter_user" {
+  description = "vcenter username"
+  type        = string
+  default     = "{{ vc_username }}"
+}
+
+variable "vcenter_pass" {
+  description = "vcenter password"
+  type        = string
+  default     = "C1sco12345!"
+  
+}
+
+variable "cco_password" {
+  description = "new password for root account"
+  type        = string
+  default     = "C1sco12345!"
+}
+
+variable "activation_key" {
+  description = "User Activation Key for Cisco Secure Workload"
+  type = string
+  default     = "75538b85236e2fbb182f20c3fe21bb37ff063177"
+}
+
+variable "cco_username" {
+  description = "CCO Username for folder buildout"
+  type        = string
+  default     = "tetvpocadmin"
+}
+
+variable "application_name" {
+  description = "Name you wish your application to use"
+  type        = string
+  default = "siwapp"
+}
+
+data "vsphere_datacenter" "dc" {
+  name = "dc1"
+}
+
+data "vsphere_datastore" "datastore" {
+  name          = "vsanDatastore"
+  datacenter_id = data.vsphere_datacenter.dc.id
+}
+
+data "vsphere_compute_cluster" "compute_cluster" {
+  name          = "Lab_Sandbox_VSAN"
+  datacenter_id = "${data.vsphere_datacenter.dc.id}"
+}
+
+data "vsphere_network" "automation_net" {
+  name          = "prod|Test_Workloads|Test_Machines"
+  datacenter_id = data.vsphere_datacenter.dc.id
+}
+
+data "vsphere_distributed_virtual_switch" "vds" {
+  name          = "ucsc_prod_vmm" 
+  datacenter_id = "${data.vsphere_datacenter.dc.id}"
+}
+
+variable "siwapp_folder_name" {
+  description = "Folder for Siwapp in vcenter"
+  type        = string
+  default     = "siwapp"
+}
+
+variable "domain" {
+  description = "domain name for deployment"
+  type        = string
+  default     = "dcloud.cisco.com"
+}
+
+data "vsphere_virtual_machine" "template" {
+  name          = "centos7_base"
+  datacenter_id = data.vsphere_datacenter.dc.id
+}
+
+#data "infoblox_ipv4_network" "automation_network" {
+#  network_view = "default"
+#  cidr = "192.168.88.0/22"
+#}
+#
+#variable "netmask" {
+#  description = "Netmask of the automation_network"
+#  type        = number
+#  default     = 22
+#}
+#
+#variable "gateway" {
+#  description = "Gateway of automation_network"
+#  type        = string
+#  default     = "192.168.91.254"
+#}
+
+variable "dns_server" {
+    description = "DNS IP"
+    type        = string
+    default     = "198.18.133.1"
+}
+
+## Reading in vCenter tag and tag category information - these are pre-created in vCenter ##
+
+data "vsphere_tag_category" "function_tc" {
+  name = "Function"
+}
+
+data "vsphere_tag_category" "application_tc" {
+  name = "Application"
+}
+
+data "vsphere_tag_category" "isPrimary_tc" {
+  name = "isPrimary"
+}
+
+data "vsphere_tag" "siwapp_tag" {
+  name        = "siwapp"
+  category_id = "${data.vsphere_tag_category.application_tc.id}"
+}
+
+data "vsphere_tag" "app_tag" {
+  name        = "app"
+  category_id = "${data.vsphere_tag_category.function_tc.id}"
+}
+
+data "vsphere_tag" "db_tag" {
+  name        = "db"
+  category_id = "${data.vsphere_tag_category.function_tc.id}"
+}
+
+data "vsphere_tag" "db_lb_tag" {
+  name        = "db-lb"
+  category_id = "${data.vsphere_tag_category.function_tc.id}"
+}
+
+data "vsphere_tag" "app_lb_tag" {
+  name        = "app-lb"
+  category_id = "${data.vsphere_tag_category.function_tc.id}"
+}
+
+data "vsphere_tag" "loadsim_tag" {
+  name        = "loadsim"
+  category_id = "${data.vsphere_tag_category.function_tc.id}"
+}
+
+data "vsphere_tag" "lead_tag" {
+  name        = "true"
+  category_id = "${data.vsphere_tag_category.isPrimary_tc.id}"
+}
