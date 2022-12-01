@@ -8,7 +8,7 @@
   tasks:
   - name: Generate pet name with separator
     ansible.builtin.set_fact:
-      dir_name: "{{ lookup('community.general.random_string') }}"
+      dir_name: "{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=8') }}"
   
   - name: Create a directory if it does not exist
     ansible.builtin.file:
