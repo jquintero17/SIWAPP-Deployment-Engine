@@ -27,3 +27,4 @@
       dest: /root/{{ dir_name }}
       single_branch: yes
       version: main
+      key_file: "/root/.ssh/id_rsa"
