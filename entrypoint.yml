@@ -24,7 +24,7 @@
   - name: Example clone of a single branch
     ansible.builtin.git:
       repo: git@github.com:jlunde-cisco/siwapp_vars.git
-      dest: /root/{{ dir_name }}
+      dest: /root/{{ dir_name }}/repo
       single_branch: yes
       version: main
       key_file: "/root/.ssh/id_rsa"
