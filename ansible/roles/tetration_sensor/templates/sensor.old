@@ -1,6 +1,36 @@
+#jinja2: lstrip_blocks: True, trim_blocks: True
+
 #!/bin/bash
 
-#jinja2: lstrip_blocks: True, trim_blocks: True
+# This script requires privilege users to execute.
+#
+# If pre-check is not skipped, checks prerequisites for installing and running
+# tet-sensor on Linux hosts.
+#
+# If all prerequisites are met and installation succeeds, the script exits
+# with 0. Otherwise it terminates with a non-zero exit code for the first error
+# faced during execution.
+#
+# The failure message is written to a logfile if passed, stdout otherwise.
+# Pre-check can skip IPv6 test by passing the --skip-ipv6 flag.
+#
+# Exit code - Reason:
+# 255 - root was not used to execute the script
+# 240 - invalid parameters are detected
+# 239 - installation failed
+# 238 - saving zip file failed
+# 237 - sensor upgrade failed
+# 236 - unsupported proxy
+#   1 - pre-check: IPv6 is not configured or disabled
+#   2 - pre-check: su is not operational
+#   3 - pre-check: curl is missing
+#   4 - pre-check: curl/libcurl compatibility test failed
+#   5 - pre-check: /tmp is not writable
+#   6 - pre-check: ${BASE_DIR}/${TET_SDIR} cannot be created
+#   7 - pre-check: ip6tables missing or not working under user space
+#   8 - pre-check: package missing
+
+# Do not trust system's PATH
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 SCRIPT_VERSION="3.7.1.5"
@@ -36,7 +66,7 @@ TEST_USER=nobody
 UNPRIVILEGED_USER=
 # Sensor type is chosen by users on UI
 SENSOR_TYPE="enforcer"
-INSTALLATION_ID="85dbfcc0de0df3b209b4ce3ac402e699dd294064dedb4f46b79f862d8e2645065adb894cc266c4e88792b87e6f2f56931a59758541c374c2796b2920805161c36cc522af599cfcb1b2a2e2a568f3104a6d69378f98ab674b16236e38321411b7dc56beea8a54e7f3af1989a05d2ad574ed"
+INSTALLATION_ID="660804ef94ae1e55286a81056104c58cf525171f1da4e94a264e04ef7887c041a14b9de7c091c1c8989d588215fbdc2695db6a608a988fb689abc498369cd5f4925e8f998d12b74db7df245decfc0fba24a1fed8cd3e1b8f871a364be93a2f2c0203ee7f425bfdfe787b940e06541afbdf"
 # Pre-check results (0: NOT FOUND, 1: PASS, 2: SKIPPED, 3: FAILED)
 AWK=0
 FLOCK=0
@@ -1198,38 +1228,38 @@ EOF
 
 cat << EOF > ta_sensor_ca.pem
 -----BEGIN CERTIFICATE-----
-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
+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
-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
+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
-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
-yr+MwqxJbJISjLozmUIjl6QHz8Ru
+CSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQCH+hu4yvt/3BJJjS+xCE4OUAoVtLP7
+5GyhwjxTCc6tNFKdfya2yVR8GOybASN1qkmvbAyj+r08nuRENEjKKdf6Vx6Xmzy8
+Y24aVmrqBtBJgGOFqnzuw0vcvAjKa85b/C0A2q6FWbNbikQk7MwprxHx5CEAqUuv
+8QDwxiLB5ieLF/RDaEQTu1Gdb3N6/+AeTLTU3h1o05/Mf2/+NJd7uOSSlmLryhVT
++ci8YucCyr8+qQAcMGE1CU9Ahj/yD0/Jafa4SJ3h937szZhAx6H4WRwiy0g+aDF3
+4+6ZwG6peQvdES+RAyf61N9LqWo7RlD9ts5BWHiR2tKu0IL2RE223xC10LH2bSLd
+g98Y1qH2JT7DjFIQJ8huSyz+TrfP8mhJaxAPPzbJIWYdQvEaPW535eFd2AvvGtTO
+qVTC6WRjvgDJVUIi5Q6EuMUYdVI6jLf+6tPCxEcqJMoj5lLNXuCtFEuHEYN/65Z5
+8gAjMkY0/8cy3qkaSMyd5C6y8D9SCaYV6fBx/G8T/+2O72mQxynQbxufEDuM+C1c
+RlxY379G72iWGLTF6qx1p0mBLYRJ45tuSfKtcZsP+IRNDGombPj2oyVMqvD+Ebhu
+6DWCgk2GPAhZj4rJHm1CNLMSbdgzb4xNxJ0SvTZcKoWaO0S1YObQf0uydBA7J1Gt
+us0tcrglLBWtLwIDAQABo2AwXjAdBgNVHQ4EFgQUbxR8YMIYV5oni0DSG7y3gtoA
+yWgwHwYDVR0jBBgwFoAUbxR8YMIYV5oni0DSG7y3gtoAyWgwDwYDVR0TAQH/BAUw
+AwEB/zALBgNVHQ8EBAMCAQYwDQYJKoZIhvcNAQELBQADggIBAFk9QvObJvMhI/Oh
+6hEgeuy45gNX0NM1MLTFuW2Vk8s4VT39TTaxuCOsXwDz9mxKtbMyFj3vRTWixa3r
+aDICFhri/acKG1DqA8Zm9pCOqdkQa3vjwdwf88lXebIi+eFtejYIRtTkN9lEjmJU
+HhAQkR8+3sElHKhmS6jjhBYpusPTJPuts1eyjS8gK7C2HmxjawjnDCUGubvxYb3A
+NyJS34uSMBtpNEFCutjLFuKgeDeRQMr1V4jrUcm0UG+nCvvcSbivX5TS4eiEVaSt
+zz26A5UG+egMzf029Ky3OOvtUiUzAp0FUY/qGnQtaIvFOdXQPsoaW9+dbhIXJu01
+BOQbAAILbMctSXKNwcjpYZc9dCcoyZE3MFOtTNOAnlRBrVwBVD/cuoI6c4JpJ/dK
+mazbk49ox7qZd1VphsScksY4Hrr5fRTZRou3jfxnRiDf82sdhVxWrVrO/ogK52Q+
+X3qQmZ+Y+qTC3K5Z79GI4t0C/LeWIHgjDpfDa+wnw76630vuxdaKm46dYe9GHRcZ
+i8RjbMXSZRsWGWkKDHxRoL6L/e1HLD/WJqsKCgW+V1yuArRzStHOjRDABf647aAz
+rFSrVyaHAZf4mZX63/7euv9CQfbJDZmKkyIH6aeGRhpjlMZwZeacbI1IzjgSDKN+
+B7t88n0D97p9tN2QKF6QbTQdsI5W
 -----END CERTIFICATE-----
 
 EOF
@@ -1349,9 +1379,9 @@ EOF
   CHK_SUM=""
   CONTENT_TYPE=""
   TS=$(date -u "+%Y-%m-%dT%H:%M:%S+0000")
-  HOST="https://64.100.1.197"
-  API_KEY=38395083092640938193976694ac6833
-  API_SECRET=b4cdae3c0037eb4c5ddac8ccac56ae5a8e866c82
+  HOST="https://198.19.101.32"
+  API_KEY=ea6ef88c0e594086ba79d58635607ee6
+  API_SECRET=2c4f85b5e3939ebde4e75db2a50316a8c3fa60a8
   ARCH=$(uname -m)
   case $CL_HTTPS_PROXY in
     http:*)
