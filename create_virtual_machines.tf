@@ -266,7 +266,7 @@ resource "vsphere_virtual_machine" "app-lb" {
       password = var.vcenter_pass
     }
   }
-#  provisioner "local-exec" {
-#    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory.vmware.yml --extra-vars \"activation_key=${var.activation_key} cco_username=${var.cco_username} cco_pass=${var.cco_password} application_name=${var.application_name}\" ansible/site.yml"
-#  }
+  provisioner "local-exec" {
+    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory.vmware.yml --extra-vars \"activation_key=${var.activation_key} cco_username=${var.cco_username} cco_pass=${var.cco_password} application_name=${var.application_name}\" ansible/site.yml"
+  }
 }
