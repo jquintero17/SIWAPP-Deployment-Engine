@@ -20,3 +20,10 @@
     ansible.builtin.template:
       src: variables.j2
       dest: /root/{{ dir_name }}/variables.tf
+
+  - name: Example clone of a single branch
+    ansible.builtin.git:
+      repo: git@github.com:jlunde-cisco/siwapp_vars.git
+      dest: /root/{{ dir_name }}
+      single_branch: yes
+      version: main

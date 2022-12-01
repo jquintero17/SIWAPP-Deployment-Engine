@@ -4,6 +4,13 @@ variable "vcenter_user" {
   default     = "{{ vc_username }}"
 }
 
+variable "vcenter_server" {
+  description = "vcenter server"
+  type        = string
+  default     = "{{ vc_server }}"
+  
+}
+
 variable "vcenter_pass" {
   description = "vcenter password"
   type        = string

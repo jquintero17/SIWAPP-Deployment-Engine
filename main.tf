@@ -14,9 +14,9 @@ terraform {
 }
 
 provider "vsphere" {
-   user = "administrator@vsphere.local"
-   password = "C1sco12345!"
-  vsphere_server = "labvc.dcloud.cisco.com"
+  user = "${var.vcenter_user}"
+  password = "${var.vcenter_pass}"
+  vsphere_server = "${var.vcenter_server}"
   allow_unverified_ssl = true
 }
 
