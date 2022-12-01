@@ -21,7 +21,7 @@
       src: variables.j2
       dest: /root/{{ dir_name }}/variables.tf
 
-  - name: Example clone of a single branch
+  - name: Clone repo to a new working directory
     ansible.builtin.git:
       repo: git@github.com:jlunde-cisco/siwapp_vars.git
       dest: /root/{{ dir_name }}/repo
@@ -29,3 +29,8 @@
       version: main
       key_file: "/root/.ssh/id_rsa"
       accept_hostkey: True
+
+  - name: Copy file with owner and permissions
+    ansible.builtin.copy:
+      src: /root/{{ dir_name }}/variables.tf
+      dest: /root/{{ dir_name }}/repo/variables.tf
