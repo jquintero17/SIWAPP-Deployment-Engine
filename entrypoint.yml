@@ -6,130 +6,130 @@
   hosts: localhost
 
   tasks:
- # - name: Generate pet name with separator
- #   ansible.builtin.set_fact:
- #     dir_name: "{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=8') }}"
- # 
- # - name: Create a directory if it does not exist
- #   ansible.builtin.file:
- #     path: /root/{{ dir_name }}
- #     state: directory
- #     mode: '0755'
-#
- # - name: Using variable input to create terraform template file
- #   ansible.builtin.template:
- #     src: variables.j2
- #     dest: /root/{{ dir_name }}/variables.tf
-#
- # - name: Clone repo to a new working directory
- #   ansible.builtin.git:
- #     repo: git@github.com:jlunde-cisco/siwapp_vars.git
- #     dest: /root/{{ dir_name }}/repo
- #     single_branch: yes
- #     version: main
- #     key_file: "/root/.ssh/id_rsa"
- #     accept_hostkey: True
-#
- # - name: Move variable file
- #   command: mv /root/{{ dir_name }}/variables.tf /root/{{ dir_name }}/repo/variables.tf
- # 
- # - name: Create a category
- #   community.vmware.vmware_category:
- #     hostname: "{{ vc_server }}"
- #     username: "{{ vc_username }}"
- #     password: "{{ vc_password }}"
- #     category_name: Application
- #     validate_certs: false
- #     state: present
- #   register: app_category 
-#
- # - name: Grab category ID
- #   ansible.builtin.set_fact:
- #     app_cat_id: app_category.category_results.category_id
-#
- # - name: Create a category
- #   community.vmware.vmware_category:
- #     hostname: "{{ vc_server }}"
- #     username: "{{ vc_username }}"
- #     password: "{{ vc_password }}"
- #     category_name: Function
- #     validate_certs: false
- #     state: present
- #   register: fun_category
-#
- # - name: Grab category ID
- #   ansible.builtin.set_fact:
- #     fun_cat_id: fun_category.category_results.category_id
-#
- # - name: Create a category
- #   community.vmware.vmware_category:
- #     hostname: "{{ vc_server }}"
- #     username: "{{ vc_username }}"
- #     password: "{{ vc_password }}"
- #     category_name: isPrimary
- #     validate_certs: false
- #     state: present
- #   register: primary_category 
-#
- # - name: Grab category ID
- #   ansible.builtin.set_fact:
- #     primary_cat_id: primary_category.category_results.category_id
-#
- # - name: Create a tag
- #   community.vmware.vmware_tag:
- #     hostname: "{{ vc_server }}"
- #     username: "{{ vc_username }}"
- #     password: "{{ vc_password }}"
- #     category_id: "{{ app_category.category_results.category_id }}"
- #     validate_certs: false
- #     tag_name: siwapp
- #     state: present
-#
- # - name: Create a tag
- #   community.vmware.vmware_tag:
- #     hostname: "{{ vc_server }}"
- #     username: "{{ vc_username }}"
- #     password: "{{ vc_password }}"
- #     category_id: "{{ primary_category.category_results.category_id }}"
- #     validate_certs: false
- #     tag_name: "true"
- #     state: present
-#
- # - name: Create a tag
- #   community.vmware.vmware_tag:
- #     hostname: "{{ vc_server }}"
- #     username: "{{ vc_username }}"
- #     password: "{{ vc_password }}"
- #     category_id: "{{ fun_category.category_results.category_id }}"
- #     validate_certs: false
- #     tag_name: "{{ item }}"
- #     state: present
- #   loop:
- #     - app
- #     - db
- #     - db-lb
- #     - app-lb
- #     - loadsim
-#
- # - name: Download the CENTOS image from repository
- #   ansible.builtin.shell: 
- #     cmd: gdown --folder --id 1Ifa9Z47VJUOF2KfYZwIEySk_E-t1T6yf
- #     chdir: /root/{{ dir_name }}/repo
- # 
- # - community.vmware.vmware_deploy_ovf:
- #     hostname: "{{ vc_server }}"
- #     username: "{{ vc_username }}"
- #     password: "{{ vc_password }}"
- #     datacenter: "{{ vcenter_dc }}"
- #     cluster: "{{ vcenter_cluster }}"
- #     datastore: "{{ vcenter_datastore }}"
- #     name: centos7_base1
- #     networks: "{u'mgmt':u'{{ vcenter_network }}'}"
- #     power_on: no
- #     validate_certs: false
- #     ovf: /root/{{ dir_name }}/repo/centos7_base/centos7_base.ovf
- #   delegate_to: localhost
- # 
+  - name: Generate pet name with separator
+    ansible.builtin.set_fact:
+      dir_name: "{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=8') }}"
+  
+  - name: Create a directory if it does not exist
+    ansible.builtin.file:
+      path: /root/{{ dir_name }}
+      state: directory
+      mode: '0755'
+
+  - name: Using variable input to create terraform template file
+    ansible.builtin.template:
+      src: variables.j2
+      dest: /root/{{ dir_name }}/variables.tf
+
+  - name: Clone repo to a new working directory
+    ansible.builtin.git:
+      repo: git@github.com:jlunde-cisco/siwapp_vars.git
+      dest: /root/{{ dir_name }}/repo
+      single_branch: yes
+      version: main
+      key_file: "/root/.ssh/id_rsa"
+      accept_hostkey: True
+
+  - name: Move variable file
+    command: mv /root/{{ dir_name }}/variables.tf /root/{{ dir_name }}/repo/variables.tf
+  
+  - name: Create a category
+    community.vmware.vmware_category:
+      hostname: "{{ vc_server }}"
+      username: "{{ vc_username }}"
+      password: "{{ vc_password }}"
+      category_name: Application
+      validate_certs: false
+      state: present
+    register: app_category 
+
+  - name: Grab category ID
+    ansible.builtin.set_fact:
+      app_cat_id: app_category.category_results.category_id
+
+  - name: Create a category
+    community.vmware.vmware_category:
+      hostname: "{{ vc_server }}"
+      username: "{{ vc_username }}"
+      password: "{{ vc_password }}"
+      category_name: Function
+      validate_certs: false
+      state: present
+    register: fun_category
+
+  - name: Grab category ID
+    ansible.builtin.set_fact:
+      fun_cat_id: fun_category.category_results.category_id
+
+  - name: Create a category
+    community.vmware.vmware_category:
+      hostname: "{{ vc_server }}"
+      username: "{{ vc_username }}"
+      password: "{{ vc_password }}"
+      category_name: isPrimary
+      validate_certs: false
+      state: present
+    register: primary_category 
+
+  - name: Grab category ID
+    ansible.builtin.set_fact:
+      primary_cat_id: primary_category.category_results.category_id
+
+  - name: Create a tag
+    community.vmware.vmware_tag:
+      hostname: "{{ vc_server }}"
+      username: "{{ vc_username }}"
+      password: "{{ vc_password }}"
+      category_id: "{{ app_category.category_results.category_id }}"
+      validate_certs: false
+      tag_name: siwapp
+      state: present
+
+  - name: Create a tag
+    community.vmware.vmware_tag:
+      hostname: "{{ vc_server }}"
+      username: "{{ vc_username }}"
+      password: "{{ vc_password }}"
+      category_id: "{{ primary_category.category_results.category_id }}"
+      validate_certs: false
+      tag_name: "true"
+      state: present
+
+  - name: Create a tag
+    community.vmware.vmware_tag:
+      hostname: "{{ vc_server }}"
+      username: "{{ vc_username }}"
+      password: "{{ vc_password }}"
+      category_id: "{{ fun_category.category_results.category_id }}"
+      validate_certs: false
+      tag_name: "{{ item }}"
+      state: present
+    loop:
+      - app
+      - db
+      - db-lb
+      - app-lb
+      - loadsim
+
+  - name: Download the CENTOS image from repository
+    ansible.builtin.shell: 
+      cmd: gdown --folder --id 1Ifa9Z47VJUOF2KfYZwIEySk_E-t1T6yf
+      chdir: /root/{{ dir_name }}/repo
+  
+  - community.vmware.vmware_deploy_ovf:
+      hostname: "{{ vc_server }}"
+      username: "{{ vc_username }}"
+      password: "{{ vc_password }}"
+      datacenter: "{{ vcenter_dc }}"
+      cluster: "{{ vcenter_cluster }}"
+      datastore: "{{ vcenter_datastore }}"
+      name: centos7_base1
+      networks: "{u'mgmt':u'{{ vcenter_network }}'}"
+      power_on: no
+      validate_certs: false
+      ovf: /root/{{ dir_name }}/repo/centos7_base/centos7_base.ovf
+    delegate_to: localhost
+  
   - name: Turning VM into a template
     community.vmware.vmware_guest:
       hostname: "{{ vc_server }}"
