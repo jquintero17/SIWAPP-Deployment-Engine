@@ -106,8 +106,8 @@
       - loadsim
 
 - name: Download the CENTOS image from repository
-  ansible.builtin.shell: gdown --folder --id 1Ifa9Z47VJUOF2KfYZwIEySk_E-t1T6yf
-  args:
+  ansible.builtin.shell: 
+    cmd: gdown --folder --id 1Ifa9Z47VJUOF2KfYZwIEySk_E-t1T6yf
     chdir: /root/{{ dir_name }}/repo
 
 - community.vmware.vmware_deploy_ovf:
