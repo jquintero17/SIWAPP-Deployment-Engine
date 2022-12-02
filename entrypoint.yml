@@ -105,9 +105,37 @@
       - app-lb
       - loadsim
 
-  - name: Execute Terraform Module for {{ application_name }}
-    terraform:
-      project_path: '/root/{{ dir_name }}/repo'
-      force_init: true
-      state: present
-    register: outputs
+- name: Download the CENTOS image from repository
+  ansible.builtin.shell: gdown --folder --id 1Ifa9Z47VJUOF2KfYZwIEySk_E-t1T6yf
+  args:
+    chdir: /root/{{ dir_name }}/repo
+
+- community.vmware.vmware_deploy_ovf:
+    hostname: "{{ vc_server }}"
+    username: "{{ vc_username }}"
+    password: "{{ vc_password }}"
+    datacenter: "{{ vcenter_dc }}"
+    cluster: "{{ vcenter_cluster }}"
+    datastore: "{{ vcenter_datastore }}"
+    name: centos7_base1
+    networks: "{u'mgmt':u'{{ vcenter_network }}'}"
+    power_on: no
+    ovf: /root/{{ dir_name }}/repo/centos7_base.ovf
+  delegate_to: localhost
+
+- name: Turning VM into a template
+  community.vmware.vmware_guest:
+    hostname: "{{ vc_server }}"
+    username: "{{ vc_username }}"
+    password: "{{ vc_password }}"
+    name: centos7_base1
+    folder: "{{ vm_folder }}"
+    is_template: true
+  delegate_to: localhost
+
+#  - name: Execute Terraform Module for {{ application_name }}
+#    terraform:
+#      project_path: '/root/{{ dir_name }}/repo'
+#      force_init: true
+#      state: present
+#    register: outputs
