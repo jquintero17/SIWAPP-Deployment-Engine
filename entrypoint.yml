@@ -80,7 +80,7 @@
       hostname: "{{ vc_server }}"
       username: "{{ vc_username }}"
       password: "{{ vc_password }}"
-      category_id: "{{ app_cat_id }}"
+      category_id: "{{ app_category.category_results.category_id }}"
       validate_certs: false
       tag_name: siwapp
       state: present
@@ -90,7 +90,7 @@
       hostname: "{{ vc_server }}"
       username: "{{ vc_username }}"
       password: "{{ vc_password }}"
-      category_id: "{{ primary_cat_id }}"
+      category_id: "{{ primary_category.category_results.category_id }}"
       validate_certs: false
       tag_name: "true"
       state: present
@@ -100,7 +100,7 @@
       hostname: "{{ vc_server }}"
       username: "{{ vc_username }}"
       password: "{{ vc_password }}"
-      category_id: "{{ fun_cat_id }}"
+      category_id: "{{ fun_category.category_results.category_id }}"
       validate_certs: false
       tag_name: "{{ item }}"
       state: present
