@@ -33,6 +33,78 @@
   - name: Move variable file
     command: mv /root/{{ dir_name }}/variables.tf /root/{{ dir_name }}/repo/variables.tf
   
+  - name: Create a category
+    community.vmware.vmware_category:
+      hostname: "{{ vc_server }}"
+      username: "{{ vc_username }}"
+      password: "{{ vc_password }}"
+      category_name: Application
+      state: present
+    register: app_category 
+
+  - name: Grab category ID
+    ansible.builtin.set_fact:
+      app_cat_id: app_category.category_results.category_id
+
+  - name: Create a category
+    community.vmware.vmware_category:
+      hostname: "{{ vc_server }}"
+      username: "{{ vc_username }}"
+      password: "{{ vc_password }}"
+      category_name: Function
+      state: present
+    register: fun_category
+
+  - name: Grab category ID
+    ansible.builtin.set_fact:
+      fun_cat_id: fun_category.category_results.category_id
+
+  - name: Create a category
+    community.vmware.vmware_category:
+      hostname: "{{ vc_server }}"
+      username: "{{ vc_username }}"
+      password: "{{ vc_password }}"
+      category_name: isPrimary
+      state: present
+    register: primary_category 
+
+  - name: Grab category ID
+    ansible.builtin.set_fact:
+      primary_cat_id: primary_category.category_results.category_id
+
+  - name: Create a tag
+    community.vmware.vmware_tag:
+      hostname: "{{ vc_server }}"
+      username: "{{ vc_username }}"
+      password: "{{ vc_password }}"
+      category_id: "{{ app_cat_id }}"
+      tag_name: siwapp
+      state: present
+
+  - name: Create a tag
+    community.vmware.vmware_tag:
+      hostname: "{{ vc_server }}"
+      username: "{{ vc_username }}"
+      password: "{{ vc_password }}"
+      category_id: "{{ primary_cat_id }}"
+      tag_name: "true"
+      state: present
+
+  - name: Create a tag
+    community.vmware.vmware_tag:
+      hostname: "{{ vc_server }}"
+      username: "{{ vc_username }}"
+      password: "{{ vc_password }}"
+      category_id: "{{ fun_cat_id }}"
+      tag_name: "{{ item }}"
+      state: present
+    loop:
+      - app
+      - db
+      - db-lb
+      - app-lb
+      - loadsim
+
   - name: Execute Terraform Module for {{ application_name }}
     terraform:
       project_path: '/root/{{ dir_name }}/repo'
