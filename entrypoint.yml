@@ -39,7 +39,7 @@
       username: "{{ vc_username }}"
       password: "{{ vc_password }}"
       category_name: Application
-      validate_certs: true
+      validate_certs: false
       state: present
     register: app_category 
 
@@ -53,7 +53,7 @@
       username: "{{ vc_username }}"
       password: "{{ vc_password }}"
       category_name: Function
-      validate_certs: true
+      validate_certs: false
       state: present
     register: fun_category
 
@@ -67,7 +67,7 @@
       username: "{{ vc_username }}"
       password: "{{ vc_password }}"
       category_name: isPrimary
-      validate_certs: true
+      validate_certs: false
       state: present
     register: primary_category 
 
@@ -81,7 +81,7 @@
       username: "{{ vc_username }}"
       password: "{{ vc_password }}"
       category_id: "{{ app_cat_id }}"
-      validate_certs: true
+      validate_certs: false
       tag_name: siwapp
       state: present
 
@@ -91,7 +91,7 @@
       username: "{{ vc_username }}"
       password: "{{ vc_password }}"
       category_id: "{{ primary_cat_id }}"
-      validate_certs: true
+      validate_certs: false
       tag_name: "true"
       state: present
 
@@ -101,7 +101,7 @@
       username: "{{ vc_username }}"
       password: "{{ vc_password }}"
       category_id: "{{ fun_cat_id }}"
-      validate_certs: true
+      validate_certs: false
       tag_name: "{{ item }}"
       state: present
     loop:
@@ -126,7 +126,7 @@
       name: centos7_base1
       networks: "{u'mgmt':u'{{ vcenter_network }}'}"
       power_on: no
-      validate_certs: true
+      validate_certs: false
       ovf: /root/{{ dir_name }}/repo/centos7_base.ovf
     delegate_to: localhost
   
@@ -136,7 +136,7 @@
       username: "{{ vc_username }}"
       password: "{{ vc_password }}"
       name: centos7_base1
-      validate_certs: true
+      validate_certs: false
       folder: "{{ vm_folder }}"
       is_template: true
     delegate_to: localhost
