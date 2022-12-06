@@ -164,3 +164,78 @@ curl -v -b cookie.txt --location --request POST 'http://127.0.0.1:3000/api/proje
         }
     ]
 }'
+
+sleep 5s
+
+curl -v -b cookie.txt --location --request POST 'http://127.0.0.1:3000/api/project/1/templates' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "project_id": 1,
+  "inventory_id": 1,
+  "repository_id": 1,
+  "environment_id": 1,
+  "view_id": null,
+  "name": "Deploy Load Generator for SIWAPP",
+  "playbook": "lb_deploy.yml",
+  "arguments": "[]",
+  "description": "Deploys the SIWAPP load-gen applicaton",
+  "allow_override_args_in_task": true,
+  "survey_vars": [
+        {
+            "name": "vc_server",
+            "title": "vc_server",
+            "required": false,
+            "type": "",
+            "description": "vcenter server name"
+        },
+        {
+            "name": "vc_username",
+            "title": "vc_username",
+            "required": false,
+            "type": "",
+            "description": "username to log into vcenter"
+        },
+        {
+            "name": "vc_password",
+            "title": "vc_password",
+            "required": false,
+            "type": "",
+            "description": "password for your vcenter"
+        },
+        {
+            "name": "vcenter_dc",
+            "title": "vcenter_dc",
+            "required": false,
+            "type": "",
+            "description": "vCenter DC name"
+        },
+        {
+            "name": "vcenter_datastore",
+            "title": "vcenter_datastore",
+            "required": false,
+            "type": "",
+            "description": "vCenter datastore name"
+        },
+        {
+            "name": "vcenter_cluster",
+            "title": "vcenter_cluster",
+            "required": false,
+            "type": "",
+            "description": "vCenter computer cluster name"
+        },
+        {
+            "name": "vcenter_network",
+            "title": "vcenter_network",
+            "required": false,
+            "type": "",
+            "description": "vCenter Network Name"
+        },
+        {
+            "name": "vcenter_vds",
+            "title": "vcenter_vds",
+            "required": false,
+            "type": "",
+            "description": "vCenter vds name"
+        }
+    ]
+}'
