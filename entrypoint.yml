@@ -112,7 +112,7 @@
 
   - name: See if we have already downloaded ovf
     stat:
-      path: /tmp/centos7_base.ovf
+      path: /tmp/centos7_base/centos7_base.ovf
     register: file_data
 
   - name: Download the CENTOS image from repository if needed
@@ -132,7 +132,7 @@
       networks: "{u'mgmt':u'{{ vcenter_network }}'}"
       power_on: no
       validate_certs: false
-      ovf: /root/{{ dir_name }}/repo/centos7_base/centos7_base.ovf
+      ovf: /tmp/centos7_base/centos7_base.ovf
     delegate_to: localhost
   
   - name: Turning VM into a template
