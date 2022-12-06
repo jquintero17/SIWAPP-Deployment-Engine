@@ -139,9 +139,9 @@
       is_template: true
     delegate_to: localhost
   
-  #  - name: Execute Terraform Module for {{ application_name }}
-  #    terraform:
-  #      project_path: '/root/{{ dir_name }}/repo'
-  #      force_init: true
-  #      state: present
-  #    register: outputs
+  - name: Execute Terraform Module for {{ application_name }}
+    terraform:
+      project_path: '/root/{{ dir_name }}/repo'
+      force_init: true
+      state: present
+    register: outputs
