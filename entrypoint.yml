@@ -110,10 +110,16 @@
       - app-lb
       - loadsim
 
-  - name: Download the CENTOS image from repository
+  - name: See if we have already downloaded ovf
+    stat:
+      path: /tmp/centos7_base.ovf
+    register: file_data
+
+  - name: Download the CENTOS image from repository if needed
     ansible.builtin.shell: 
       cmd: gdown --folder --id 1Ifa9Z47VJUOF2KfYZwIEySk_E-t1T6yf
-      chdir: /root/{{ dir_name }}/repo
+      chdir: /tmp
+    when: not file_data.stat.exists
   
   - community.vmware.vmware_deploy_ovf:
       hostname: "{{ vc_server }}"
