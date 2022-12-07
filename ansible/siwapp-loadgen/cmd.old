@@ -1,0 +1,9 @@
+
+export VC_URL=vc01.tetlab.cpoc.co
+export VC_USER=administrator@vsphere.local
+export VC_PW=your-vc-pw-here
+export VM_NAME_FILTER=haproxy-app
+export SIWAPP_USER=siwapp
+export SIWAPP_PW=siwapp
+
+docker run --env VC_URL=vc01.tetlab.cpoc.co --env VC_USER=administrator@vsphere.local --env SIWAPP_USER=siwapp --env SIWAPP_PW=siwapp --env VC_PW=C1sco12345! --env VM_NAME_FILTER=haproxy-app cmacrdu/pegasus-invoicing-load:latest

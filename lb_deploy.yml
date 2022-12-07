@@ -6,28 +6,13 @@
   hosts: localhost
 
   tasks:
-  - name: See if we have already downloaded ovf
-    stat:
-      path: /tmp/siwapp-load-gen/load-sim01.ovf
-    register: file_data
+  - name: Using variable input to create terraform template file
+    ansible.builtin.template:
+      src: siwapp-loadgen/siwapp-loadgen-secrets.j2
+      dest: siwapp-loadgen/siwapp-loadgen-secrets.yaml
 
-  - name: Download the load-sim image from repository if needed
-    ansible.builtin.shell: 
-      cmd: gdown --folder --id 1HaUDYPNCNMNbMN_k8p3tIXo-lNO7sUO7
-      chdir: /tmp
-    when: not file_data.stat.exists
-  
-  - community.vmware.vmware_deploy_ovf:
-      hostname: "{{ vc_server }}"
-      username: "{{ vc_username }}"
-      password: "{{ vc_password }}"
-      datacenter: "{{ vcenter_dc }}"
-      cluster: "{{ vcenter_cluster }}"
-      datastore: "{{ vcenter_datastore }}"
-      name: siwapp-load-gen
-      networks: "{u'mgmt':u'{{ vcenter_network }}'}"
-      power_on: yes
-      validate_certs: false
-      ovf: /tmp/siwapp-load-gen/load-sim01.ovf
-    delegate_to: localhost
+- name: Install microk8s --classic
+  community.general.snap:
+    name: microk8s
+    classic: true
 
