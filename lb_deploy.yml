@@ -24,7 +24,15 @@
       single_branch: yes
       version: main
       accept_hostkey: True
-      
+
+  - name: Create a directory if it does not exist
+    ansible.builtin.file:
+      path: /root/{{ dir_name }}/repo
+      state: directory
+      mode: '1777'
+      recurse: True
+      owner: root
+
   - name: Using variable input to create terraform template file
     ansible.builtin.template:
       src: /root/{{ dir_name }}/repo/siwapp-loadgen/siwapp-loadgen-secrets.j2
