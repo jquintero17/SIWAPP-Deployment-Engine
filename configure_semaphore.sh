@@ -164,3 +164,41 @@ curl -v -b cookie.txt --location --request POST 'http://127.0.0.1:3000/api/proje
         }
     ]
 }'
+
+curl -v -b cookie.txt --location --request POST 'http://127.0.0.1:3000/api/project/1/templates' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "project_id": 1,
+  "inventory_id": 1,
+  "repository_id": 1,
+  "environment_id": 1,
+  "view_id": null,
+  "name": "Deploy Load-Generator",
+  "playbook": "lb_deploy.yml",
+  "arguments": "[]",
+  "description": "Deploys the load-generator for SIWAPP",
+  "allow_override_args_in_task": true,
+  "survey_vars": [
+        {
+            "name": "vc_server",
+            "title": "vc_server",
+            "required": false,
+            "type": "",
+            "description": "vcenter server IP Address - PLEASE USE IP"
+        },
+        {
+            "name": "vc_username",
+            "title": "vc_username",
+            "required": false,
+            "type": "",
+            "description": "username to log into vcenter"
+        },
+        {
+            "name": "vc_password",
+            "title": "vc_password",
+            "required": false,
+            "type": "",
+            "description": "password for your vcenter"
+        }
+    ]
+}'
