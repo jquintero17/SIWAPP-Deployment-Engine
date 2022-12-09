@@ -6,6 +6,9 @@
   hosts: localhost
 
   tasks:
+  - name: Configure MicroK8S
+    command: whoami
+
   - name: Generate pet name with separator
     ansible.builtin.set_fact:
       dir_name: "{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=8') }}"
