@@ -29,7 +29,7 @@
     ansible.builtin.file:
       path: /root/{{ dir_name }}/repo
       state: directory
-      mode: '1777'
+      mode: '0777'
       recurse: True
       owner: root
 
