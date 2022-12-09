@@ -11,16 +11,16 @@
       src: siwapp-loadgen/siwapp-loadgen-secrets.j2
       dest: siwapp-loadgen/siwapp-loadgen-secrets.yaml
 
-- name: Install microk8s --classic
-  community.general.snap:
-    name: microk8s
-    classic: true
-
-- name: Configure MicroK8S
-  command: microk8s enable dns dashboard storage
-
-- name: Configure the container to load-test siwapp
-  command: microk8s kubectl apply -f siwapp-loadgen/siwapp-loadgen-secrets.yaml
-
-- name: Configure the container to load-test siwapp
-  command: microk8s kubectl apply -f siwapp-loadgen/siwapp-loadgen-deployment.yaml
+  - name: Install microk8s --classic
+    community.general.snap:
+      name: microk8s
+      classic: true
+  
+  - name: Configure MicroK8S
+    command: microk8s enable dns dashboard storage
+  
+  - name: Configure the container to load-test siwapp
+    command: microk8s kubectl apply -f siwapp-loadgen/siwapp-loadgen-secrets.yaml
+  
+  - name: Configure the container to load-test siwapp
+    command: microk8s kubectl apply -f siwapp-loadgen/siwapp-loadgen-deployment.yaml
