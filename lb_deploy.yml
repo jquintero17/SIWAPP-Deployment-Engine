@@ -8,29 +8,29 @@
   tasks:
   - name: Download the CENTOS image from repository if needed
     ansible.builtin.shell: 
-      cmd: mv .siwapp-loadgen /tmp/siwapp-loadgen
+      cmd: ls -la
   
-  - name: Using variable input to create terraform template file
-    ansible.builtin.template:
-      src: /tmp/siwapp-loadgen/siwapp-loadgen-secrets.j2
-      dest: /tmp/siwapp-loadgen/siwapp-loadgen-secrets.yaml
-
-  - name: Install microk8s --classic
-    community.general.snap:
-      name: microk8s
-      classic: true
-  
-  - name: Configure MicroK8S
-    command: microk8s enable dns dashboard storage
-
-  - name: Download the CENTOS image from repository if needed
-    ansible.builtin.shell: 
-      cmd: gdown --folder --id 1Ifa9Z47VJUOF2KfYZwIEySk_E-t1T6yf
-      chdir: /tmp
-    when: not file_data.stat.exists
-  
-  - name: Configure the container to load-test siwapp
-    command: microk8s kubectl apply -f /tmp/siwapp-loadgen/siwapp-loadgen-secrets.yaml
-  
-  - name: Configure the container to load-test siwapp
-    command: microk8s kubectl apply -f /tmp/siwapp-loadgen/siwapp-loadgen-deployment.yaml
+#  - name: Using variable input to create terraform template file
+#    ansible.builtin.template:
+#      src: /tmp/siwapp-loadgen/siwapp-loadgen-secrets.j2
+#      dest: /tmp/siwapp-loadgen/siwapp-loadgen-secrets.yaml
+#
+#  - name: Install microk8s --classic
+#    community.general.snap:
+#      name: microk8s
+#      classic: true
+#  
+#  - name: Configure MicroK8S
+#    command: microk8s enable dns dashboard storage
+#
+#  - name: Download the CENTOS image from repository if needed
+#    ansible.builtin.shell: 
+#      cmd: gdown --folder --id 1Ifa9Z47VJUOF2KfYZwIEySk_E-t1T6yf
+#      chdir: /tmp
+#    when: not file_data.stat.exists
+#  
+#  - name: Configure the container to load-test siwapp
+#    command: microk8s kubectl apply -f /tmp/siwapp-loadgen/siwapp-loadgen-secrets.yaml
+#  
+#  - name: Configure the container to load-test siwapp
+#    command: microk8s kubectl apply -f /tmp/siwapp-loadgen/siwapp-loadgen-deployment.yaml
