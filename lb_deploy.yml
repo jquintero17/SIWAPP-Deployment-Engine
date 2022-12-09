@@ -4,6 +4,7 @@
 
 - name: SETUP SIWAPP LOAD GENERATOR FOR DEPLOY
   hosts: localhost
+  become: yes
 
   tasks:
   - name: Configure MicroK8S
