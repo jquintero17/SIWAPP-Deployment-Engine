@@ -6,10 +6,14 @@
   hosts: localhost
 
   tasks:
+  - name: Download the CENTOS image from repository if needed
+    ansible.builtin.shell: 
+      cmd: mv siwapp-loadgen /tmp/siwapp-loadgen
+  
   - name: Using variable input to create terraform template file
     ansible.builtin.template:
-      src: siwapp-loadgen/siwapp-loadgen-secrets.j2
-      dest: siwapp-loadgen/siwapp-loadgen-secrets.yaml
+      src: /tmp/siwapp-loadgen/siwapp-loadgen-secrets.j2
+      dest: /tmp/siwapp-loadgen/siwapp-loadgen-secrets.yaml
 
   - name: Install microk8s --classic
     community.general.snap:
@@ -18,9 +22,15 @@
   
   - name: Configure MicroK8S
     command: microk8s enable dns dashboard storage
+
+  - name: Download the CENTOS image from repository if needed
+    ansible.builtin.shell: 
+      cmd: gdown --folder --id 1Ifa9Z47VJUOF2KfYZwIEySk_E-t1T6yf
+      chdir: /tmp
+    when: not file_data.stat.exists
   
   - name: Configure the container to load-test siwapp
-    command: microk8s kubectl apply -f siwapp-loadgen/siwapp-loadgen-secrets.yaml
+    command: microk8s kubectl apply -f /tmp/siwapp-loadgen/siwapp-loadgen-secrets.yaml
   
   - name: Configure the container to load-test siwapp
-    command: microk8s kubectl apply -f siwapp-loadgen/siwapp-loadgen-deployment.yaml
+    command: microk8s kubectl apply -f /tmp/siwapp-loadgen/siwapp-loadgen-deployment.yaml
