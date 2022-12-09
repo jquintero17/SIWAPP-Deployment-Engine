@@ -8,7 +8,7 @@
   tasks:
   - name: Download the CENTOS image from repository if needed
     ansible.builtin.shell: 
-      cmd: mv siwapp-loadgen /tmp/siwapp-loadgen
+      cmd: mv .siwapp-loadgen /tmp/siwapp-loadgen
   
   - name: Using variable input to create terraform template file
     ansible.builtin.template:
