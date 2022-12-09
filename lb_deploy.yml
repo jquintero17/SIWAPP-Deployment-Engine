@@ -14,7 +14,8 @@
     ansible.builtin.file:
       path: /root/{{ dir_name }}
       state: directory
-      mode: '0755'
+      mode: '0777'
+      recurse: True
 
   - name: Clone repo to a new working directory
     ansible.builtin.git:
