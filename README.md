@@ -1,5 +1,7 @@
 ## SIWAPP to vCenter Deployment Engine
 ###### The following will deploy a 4-tiered SIWAPP instance to vCenter. You can deploy as many SIWAPP instances as necessary
+Dependency: DHCP must be present within a port-group in vCenter for deploying SIWAPP
+
 1. Build an Ubuntu 20.04 machine with 2vCPU, 4G RAM, and min. 64GB HDD
 2. Run the following commands. These will install any dependencies and the semaphore application + configuration:
 
