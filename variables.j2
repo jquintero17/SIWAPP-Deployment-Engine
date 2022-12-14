@@ -27,7 +27,11 @@ variable "cco_password" {
 variable "activation_key" {
   description = "User Activation Key for Cisco Secure Workload"
   type = string
+{% if activation_key is defined %}
   default     = "{{ csw_activation_key }}"
+{% else %}
+  default     = "DontDoDrugs"
+{% endif %}
 }
 
 variable "cco_username" {
