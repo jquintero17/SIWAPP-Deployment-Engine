@@ -83,84 +83,84 @@ curl -v -b cookie.txt --location --request POST 'http://127.0.0.1:3000/api/proje
             "title": "vc_server",
             "required": false,
             "type": "",
-            "description": "vcenter server IP Address - PLEASE USE IP"
+            "description": "REQUIRED: vcenter server IP Address - PLEASE USE IP"
         },
         {
             "name": "vc_username",
             "title": "vc_username",
             "required": false,
             "type": "",
-            "description": "username to log into vcenter"
+            "description": "REQUIRED: username to log into vcenter"
         },
         {
             "name": "vc_password",
             "title": "vc_password",
             "required": false,
             "type": "",
-            "description": "password for your vcenter"
+            "description": "REQUIRED: password for your vcenter"
         },
         {
             "name": "linux_pass",
             "title": "linux_pass",
             "required": false,
             "type": "",
-            "description": "Linux machine root password"
+            "description": "REQUIRED: Linux machine root password"
         },
         {
             "name": "csw_activation_key",
             "title": "csw_activation_key",
             "required": false,
             "type": "",
-            "description": "CSW activation key for tenant"
+            "description": "OPTIONAL: CSW activation key for tenant"
         },
         {
             "name": "vcenter_dc",
             "title": "vcenter_dc",
             "required": false,
             "type": "",
-            "description": "vCenter DC name"
+            "description": "REQUIRED: vCenter DC name"
         },
         {
             "name": "vcenter_datastore",
             "title": "vcenter_datastore",
             "required": false,
             "type": "",
-            "description": "vCenter datastore name"
+            "description": "REQUIRED: vCenter datastore name"
         },
         {
             "name": "vcenter_cluster",
             "title": "vcenter_cluster",
             "required": false,
             "type": "",
-            "description": "vCenter computer cluster name"
+            "description": "REQUIRED: vCenter computer cluster name"
         },
         {
             "name": "vcenter_network",
             "title": "vcenter_network",
             "required": false,
             "type": "",
-            "description": "vCenter Network Name"
+            "description": "REQUIRED: vCenter Network Name"
         },
         {
             "name": "vcenter_vds",
             "title": "vcenter_vds",
             "required": false,
             "type": "",
-            "description": "vCenter vds name"
+            "description": "REQUIRED: vCenter vds name"
         },
         {
             "name": "domain_name",
             "title": "domain_name",
             "required": false,
             "type": "",
-            "description": "Network Domain Name"
+            "description": "REQUIRED: Network Domain Name"
         },
         {
             "name": "dns_ip",
             "title": "dns_ip",
             "required": false,
             "type": "",
-            "description": "DNS Server IP address"
+            "description": "REQUIRED: DNS Server IP address"
         }
     ]
 }'
@@ -184,21 +184,21 @@ curl -v -b cookie.txt --location --request POST 'http://127.0.0.1:3000/api/proje
             "title": "vc_server",
             "required": false,
             "type": "",
-            "description": "vcenter server IP Address - PLEASE USE IP"
+            "description": "REQUIRED: vcenter server IP Address - PLEASE USE IP"
         },
         {
             "name": "vc_username",
             "title": "vc_username",
             "required": false,
             "type": "",
-            "description": "username to log into vcenter"
+            "description": "REQUIRED: username to log into vcenter"
         },
         {
             "name": "vc_password",
             "title": "vc_password",
             "required": false,
             "type": "",
-            "description": "password for your vcenter"
+            "description": "REQUIRED: password for your vcenter"
         }
     ]
 }'

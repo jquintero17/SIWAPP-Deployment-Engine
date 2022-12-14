@@ -157,7 +157,7 @@
   - name: include TETRATION-SENSOR ROLE
     include_role:
       name: tetration_sensor
-    when: "'loadsim' not in ansible_hostname"
+    when: "'DontDoDrugs' not in activation_key"
 
   - name: Change root password
     user:
