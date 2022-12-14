@@ -26,7 +26,7 @@
       repo: https://github.com/jlunde-cisco/siwapp_vars.git
       dest: /root/{{ dir_name }}/repo
       single_branch: yes
-      version: main
+      version: patch-1
       accept_hostkey: True
 
   - name: Move variable file
