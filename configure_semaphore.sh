@@ -31,11 +31,22 @@ sleep 5s
 curl -v -b cookie.txt --location --request POST 'http://127.0.0.1:3000/api/project/1/repositories' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-  "name": "github",
+  "name": "vcenter_deploy",
   "project_id": 1,
-  "git_url": "https://github.com/jlunde-cisco/siwapp_vars.git",
+  "git_url": "https://github.com/jlunde-cisco/SIWAPP-Deployment-Engine.git",
   "git_branch": "main",
   "ssh_key_id": 1
+}'
+sleep 5s
+
+curl -v -b cookie.txt --location --request POST 'http://127.0.0.1:3000/api/project/1/repositories' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "name": "aws_deploy",
+    "project_id": 1,
+    "git_url": "https://github.com/jlunde-cisco/terraform-aws-siwapp.git",
+    "git_branch": "main",
+    "ssh_key_id": 1
 }'
 
 sleep 5s
@@ -201,4 +212,72 @@ curl -v -b cookie.txt --location --request POST 'http://127.0.0.1:3000/api/proje
             "description": "REQUIRED: password for your vcenter"
         }
     ]
+}'
+
+sleep 5s
+
+curl -v -b cookie.txt --location --request POST 'http://127.0.0.1:3000/api/project/1/templates' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "id": 3,
+    "project_id": 1,
+    "inventory_id": 1,
+    "repository_id": 2,
+    "environment_id": 1,
+    "name": "Deploy Siwapp to AWS",
+    "playbook": "entrypoint.yml",
+    "arguments": "[]",
+    "allow_override_args_in_task": true,
+    "description": "Siwapp to AWS",
+    "survey_vars": [
+        {
+            "name": "aws_access",
+            "title": "AWS Access Key",
+            "required": false,
+            "type": "",
+            "description": "Your API Access Key"
+        },
+        {
+            "name": "aws_secret",
+            "title": "AWS Secret Key",
+            "required": false,
+            "type": "",
+            "description": "Your AWS Secret Key"
+        },
+        {
+            "name": "aws_region",
+            "title": "AWS Region to Deploy",
+            "required": false,
+            "type": "",
+            "description": "AWS Region to Deploy (example format: us-east-1)"
+        },
+        {
+            "name": "key_pair_name",
+            "title": "AWS Key Pair Name",
+            "required": false,
+            "type": "",
+            "description": "Your AWS Key Pair Name"
+        },
+        {
+            "name": "private_key",
+            "title": "SSH Private Key Contents (see ReadME for format)",
+            "required": false,
+            "type": "",
+            "description": "AWS Private Key contents"
+        },
+        {
+            "name": "owner",
+            "title": "Your Name",
+            "required": false,
+            "type": "",
+            "description": "Your name for tagging"
+        },
+        {
+            "name": "bucket_name",
+            "title": "S3 Bucket Name",
+            "required": false,
+            "type": "",
+            "description": "Your S3 bucket name for vpc flow logs"
+        }
+    ],
 }'

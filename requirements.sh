@@ -13,10 +13,13 @@ sudo apt install git -y
 sudo apt install python3-pip -y
 pip3 install pyvmomi
 ansible-galaxy collection install community.vmware
+ansible-galaxy collection install amazon.aws
 pip install testresources
 pip install --upgrade setuptools==62.0.0
 pip install --upgrade git+https://github.com/vmware/vsphere-automation-sdk-python.git
 pip install gdown
+pip3 install botocore
+pip3 install boto3
 
 echo ========== INSTALLING ANSIBLE COMPLETE ============
 
@@ -40,3 +43,10 @@ echo ==== Username: user1, password: user1, URL: http://[local ip]:3000 ====
 echo ========== INSTALLING TERRAFORM ==============
 
 sudo apt install terraform -y
+
+echo ========== INSTALLING AWS CLI ==============
+
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+sudo apt install unzip -y
+unzip awscliv2.zip
+sudo ./aws/install
