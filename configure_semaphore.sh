@@ -279,5 +279,6 @@ curl -v -b cookie.txt --location --request POST 'http://127.0.0.1:3000/api/proje
             "type": "",
             "description": "Your S3 bucket name for vpc flow logs"
         }
-    ],
+    ]
 }'
+
