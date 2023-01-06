@@ -1,5 +1,5 @@
-## SIWAPP to vCenter Deployment Engine
-###### The following will deploy a 4-tiered SIWAPP instance to vCenter. You can deploy as many SIWAPP instances as necessary
+## SIWAPP to vCenter or AWS Deployment Engine
+###### The following will deploy a 4-tiered SIWAPP instance to vCenter or AWS. You can deploy as many SIWAPP instances as necessary
 Dependency: DHCP must be present within a port-group in vCenter for deploying SIWAPP
 
 1. Build an Ubuntu 20.04 machine with 2vCPU, 4G RAM, and min. 64GB HDD
@@ -17,7 +17,14 @@ Dependency: DHCP must be present within a port-group in vCenter for deploying SI
 4. Login with user1/user1
 5. Navigate to Inventory(left side)-->edit the local host entry (pencil icon)
 6. Change the ansible username and ssh password to the root credentials of your ubuntu box's local account.
-7. Click on Task Templates, and run the Deploy Siwapp job
-	!! Fill in the information within the menu. Try to use the IP address of your vCenter server
-8. After this is complete you should see the VM's in your vCenter inventory, and you should be able to browse to the IP address of the app-lb machine, and login with siwapp/siwapp
-9. Run the Deploy Load Generator Task Template. This will turn your local ubuntu box into a load-generator for the siwapp instances. It will install microk8s, and run the load-gen containers. 
+
+#### For vCenter Deployment
+Click on Task Templates, and run the 'Deploy Siwapp' job
+1. Fill in the information within the menu. Try to use the IP address of your vCenter server
+2. After this is complete you should see the VM's in your vCenter inventory, and you should be able to browse to the IP address of the app-lb machine, and login with siwapp/siwapp
+3. Run the Deploy Load Generator Task Template. This will turn your local ubuntu box into a load-generator for the siwapp instances. It will install microk8s, and run the load-gen containers. 
+
+#### For AWS Deployment
+
+1. Click on Task Templates, and run the 'Deploy Siwapp to AWS' job template
+![aws instructions](aws_siwapp_help.png)
