@@ -25,6 +25,7 @@ Click on Task Templates, and run the 'Deploy Siwapp' job
 3. Run the Deploy Load Generator Task Template. This will turn your local ubuntu box into a load-generator for the siwapp instances. It will install microk8s, and run the load-gen containers. 
 
 #### For AWS Deployment
+Dependency: AWS Key Pair generated, S3 bucket for flow logs created, AWS API access credentials (access id and secret key)
 
 1. Click on Task Templates, and run the 'Deploy Siwapp to AWS' job template
 ![aws instructions](aws_siwapp_help.png)
