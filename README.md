@@ -26,6 +26,7 @@ Click on Task Templates, and run the 'Deploy Siwapp' job
 
 #### For AWS Deployment
 Dependency: AWS Key Pair generated, S3 bucket for flow logs created, AWS API access credentials (access id and secret key)
+NOTE: MUST deploy in us-east-1 currently. The key pair, and s3 bucket must also reside in us-east-1
 
 1. Click on Task Templates, and run the 'Deploy Siwapp to AWS' job template
 ![aws instructions](aws_siwapp_help.png)
