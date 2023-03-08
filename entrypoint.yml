@@ -128,7 +128,7 @@
       datacenter: "{{ vcenter_dc }}"
       cluster: "{{ vcenter_cluster }}"
       datastore: "{{ vcenter_datastore }}"
-      name: centos7_base1
+      name: centos7_base
       networks: "{u'mgmt':u'{{ vcenter_network }}'}"
       power_on: no
       validate_certs: false
@@ -140,7 +140,7 @@
       hostname: "{{ vc_server }}"
       username: "{{ vc_username }}"
       password: "{{ vc_password }}"
-      name: centos7_base1
+      name: centos7_base
       validate_certs: false
       is_template: true
     delegate_to: localhost
