@@ -1,9 +1,39 @@
+#jinja2: lstrip_blocks: True, trim_blocks: True
+
 #!/bin/bash
 
-#jinja2: lstrip_blocks: True, trim_blocks: True
+# This script requires privilege users to execute.
+#
+# If pre-check is not skipped, checks prerequisites for installing and running
+# tet-sensor on Linux hosts.
+#
+# If all prerequisites are met and installation succeeds, the script exits
+# with 0. Otherwise it terminates with a non-zero exit code for the first error
+# faced during execution.
+#
+# The failure message is written to a logfile if passed, stdout otherwise.
+# Pre-check can skip IPv6 test by passing the --skip-ipv6 flag.
+#
+# Exit code - Reason:
+# 255 - root was not used to execute the script
+# 240 - invalid parameters are detected
+# 239 - installation failed
+# 238 - saving zip file failed
+# 237 - sensor upgrade failed
+# 236 - unsupported proxy
+#   1 - pre-check: IPv6 is not configured or disabled
+#   2 - pre-check: su is not operational
+#   3 - pre-check: curl is missing
+#   4 - pre-check: curl/libcurl compatibility test failed
+#   5 - pre-check: /tmp is not writable
+#   6 - pre-check: ${BASE_DIR}/${TET_SDIR} cannot be created
+#   7 - pre-check: ip6tables missing or not working under user space
+#   8 - pre-check: package missing
+
+# Do not trust system's PATH
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-SCRIPT_VERSION="3.7.1.5"
+SCRIPT_VERSION="3.7.1.5-PATCH-3.7.1.22"
 LOG_FILE=
 CL_HTTPS_PROXY=""
 PROXY_ARGS=
@@ -32,11 +62,12 @@ LOG_PATH_CHANGED=
 TMPBDIR=/tmp
 TMPLOG=
 MAJOR_FLAGS_USED=0
+GOLDEN_IMAGE=
 TEST_USER=nobody
 UNPRIVILEGED_USER=
 # Sensor type is chosen by users on UI
 SENSOR_TYPE="enforcer"
-INSTALLATION_ID="85dbfcc0de0df3b209b4ce3ac402e699dd294064dedb4f46b79f862d8e2645065adb894cc266c4e88792b87e6f2f56931a59758541c374c2796b2920805161c36cc522af599cfcb1b2a2e2a568f3104a6d69378f98ab674b16236e38321411b7dc56beea8a54e7f3af1989a05d2ad574ed"
+INSTALLATION_ID="59a49cb0df991a1d025c94c1f03da387fdf0df73bfb6bdb6d4d36635685abe124a767000c410eaac9c3f65561932687478fecd3ecba2827f0491b3f6066b480c27812a84557ca88ccc61cb2241c7e6569c6177f9bca1d9c10f2e43174e6e82740f22d080693abd25e9cda5607c1a7aa091"
 # Pre-check results (0: NOT FOUND, 1: PASS, 2: SKIPPED, 3: FAILED)
 AWK=0
 FLOCK=0
@@ -45,7 +76,6 @@ DMIDECODE=0
 OPENSSL=0
 UNZIP=0
 SED=0
-IPSET=0
 IPTABLES=0
 IPV6_ENABLED=0
 IP6TABLES=0
@@ -56,11 +86,10 @@ INSTALLATION_DIR=0
 
 # Required package versions
 OPENSSL_REQUIRED_VERSION=
-IPSET_REQUIED_VERSION=
 IPTABLES_REQUIED_VERSION=
 
 function print_usage {
-  echo "Usage: $0 [--pre-check] [--skip-pre-check=<option>] [--no-install] [--logfile=<filename>] [--proxy=<proxy_string>] [--no-proxy] [--help] [--version] [--sensor-version=<version_info>] [--ls] [--file=<filename>] [--save=<filename>] [--new] [--reinstall] [--unpriv-user] [--force-upgrade] [--upgrade-local] [--upgrade-by-uuid=<filename>] [--basedir=<basedir>] [--logbasedir=<logbdir>] [--visibility]"
+  echo "Usage: $0 [--pre-check] [--skip-pre-check=<option>] [--no-install] [--logfile=<filename>] [--proxy=<proxy_string>] [--no-proxy] [--help] [--version] [--sensor-version=<version_info>] [--ls] [--file=<filename>] [--save=<filename>] [--new] [--reinstall] [--unpriv-user] [--force-upgrade] [--upgrade-local] [--upgrade-by-uuid=<filename>] [--basedir=<basedir>] [--logbasedir=<logbdir>] [--tmpdir=<tmp_dir>] [--visibility] [--golden-image]"
   echo "  --pre-check: run pre-check only"
   echo "  --skip-pre-check=<option>: skip pre-installation check by given option; Valid options include 'all', 'ipv6' and 'enforcement'; e.g.: '--skip-pre-check=all' will skip all pre-installation checks; All pre-checks will be performed by default"
   echo "  --no-install: will not download and install sensor package onto the system"
@@ -81,8 +110,9 @@ function print_usage {
   echo "  --upgrade-by-uuid=<filename>: trigger sensor whose uuid is listed in <filename> upgrade to version given by --sensor-version flag; e.g.: '--sensor-version=3.4.1.0 --upgrade-by-uuid=/usr/local/tet/sensor_id'; apply the latest version by default if --sensor-version flag was not provided"
   echo "  --basedir=<base_dir>: instead of using /usr/local use <base_dir> to install agent. The full path will be <base_dir>/tetration"
   echo "  --logbasedir=<log_base_dir>: instead of logging to /usr/local/tet/log use <log_base_dir>. The full path will be <log_base_dir>/tetration"
-  echo "  --tmpdir=<tmp_dir>: instead of using /tmp use <tmp_dir> as temp directory."
+  echo "  --tmpdir=<tmp_dir>: instead of using /tmp use <tmp_dir> as temp directory"
   echo "  --visibility: install deep visibility agent only; --reinstall would overwrite this flag if previous installed agent type was enforcer"
+  echo "  --golden-image: install Cisco Secure Workload Agent but do not start the Cisco Secure Workload Services; use to install Cisco Secure Workload Agent on Golden Images in VDI environment or Template VM. On VDI/VM instance created from golden image with different host name, Cisco Secure Workload Services will work normally"
 }
 
 function print_version {
@@ -207,21 +237,6 @@ function print_pre_check_results {
     printf_log "%-10s" "FAIL"
     printf_log "Lower version installed. Required >= " 
     printf_log "$OPENSSL_REQUIRED_VERSION"
-  fi
-  printf_log "\n"
-
-  printf_log "%-20s" "ipset"
-  if [ $IPSET -eq 0 ] ; then
-    printf_log "%-10s" "FAIL"
-    printf_log "Package not found"
-  elif [ $IPSET -eq 1 ] ; then
-    printf_log "%-10s" "PASS"
-  elif [ $IPSET -eq 2 ] ; then
-    printf_log "%-10s" "SKIPPED"
-  else
-    printf_log "%-10s" "FAIL" 
-    printf_log "Lower version installed. Required >= "
-    printf_log "$IPSET_REQUIED_VERSION"
   fi
   printf_log "\n"
 
@@ -384,7 +399,7 @@ function compare_version {
         return 2
       fi
     fi
-    {% endraw %}
+  {% endraw %}
   done
   return 0
 }
@@ -603,18 +618,6 @@ function pre_check {
             ;;
         esac
         if [ "$SENSOR_TYPE" = "enforcer" ] && [ "$SKIP_PRECHECK" != "enforcement" ] ; then
-          log "Checking for ipset version...(Enforcement) "
-          IPSET_REQUIED_VERSION="6.11-4"
-          check_pkg_version_rpm "ipset" "6.11" "4"
-          RPM_CHECK_RES=$?
-          if [ $RPM_CHECK_RES -eq 0 ] ; then
-            IPSET=1
-          else
-            PRECHECK_FAIL=8
-            if [ $RPM_CHECK_RES -eq 2 ] ; then
-              IPSET=3
-            fi
-          fi
           log "Checking for iptables version...(Enforcement) "
           IPTABLES_REQUIED_VERSION="1.4.7-16"
           iptables_pkg=$(rpm -q --whatprovides iptables)
@@ -631,7 +634,6 @@ function pre_check {
             fi
           fi
         else
-          IPSET=2
           IPTABLES=2
         fi
       ;;
@@ -692,18 +694,6 @@ function pre_check {
             fi
         esac
         if [ "$SENSOR_TYPE" = "enforcer" ] && [ "$SKIP_PRECHECK" != "enforcement" ]; then
-          log "Checking for ipset version...(Enforcement) "
-          IPSET_REQUIED_VERSION="6.11-4"
-          check_pkg_version_rpm "ipset" "6.11" "4"
-          RPM_CHECK_RES=$?
-          if [ $RPM_CHECK_RES -eq 0 ] ; then
-            IPSET=1
-          else
-            PRECHECK_FAIL=8
-            if [ $RPM_CHECK_RES -eq 2 ] ; then
-              IPSET=3
-            fi
-          fi
           log "Checking for iptables version...(Enforcement) "
           IPTABLES_REQUIED_VERSION="1.4.6-2.11.4"
           check_pkg_version_rpm "iptables" "1.4.6" "2.11.4"
@@ -717,7 +707,6 @@ function pre_check {
             fi
           fi
         else
-          IPSET=2
           IPTABLES=2
         fi
       ;;
@@ -802,18 +791,6 @@ function pre_check {
             ;;
         esac
         if [ "$SENSOR_TYPE" = "enforcer" ] && [ "$SKIP_PRECHECK" != "enforcement" ]; then
-          log "Checking for ipset version...(Enforcement) "
-          IPSET_REQUIED_VERSION="6.11-4"
-          check_pkg_version_dpkg "ipset" "6.11" "4"
-          RPM_CHECK_RES=$?
-          if [ $RPM_CHECK_RES -eq 0 ] ; then
-            IPSET=1
-          else
-            PRECHECK_FAIL=8
-            if [ $RPM_CHECK_RES -eq 2 ] ; then
-              IPSET=3
-            fi
-          fi
           log "Checking for iptables version...(Enforcement) "
           IPTABLES_REQUIED_VERSION="1.4.7-16"          
           check_pkg_version_dpkg "iptables" "1.4.7" "16"
@@ -827,7 +804,6 @@ function pre_check {
             fi
           fi
         else
-          IPSET=2
           IPTABLES=2
         fi
       ;;
@@ -860,15 +836,6 @@ function pre_check {
         fi
         if [ "$SENSOR_TYPE" = "enforcer" ] && [ "$SKIP_PRECHECKK" != "enforcement" ]; then
           # since Amazon Linux 2 is pretty recent, we don't check for minimum version
-          printf_log "Checking for ipset...(Enforcement) "
-          ipset -v > /dev/null 2>&1
-          if [ $? -ne 0 ] ; then
-            printf_log "not found\n"
-            PRECHECK_FAIL=8
-          else
-            IPSET=1
-            printf_log "yes\n"
-          fi
           printf_log "Checking for iptables...(Enforcement) "
           iptables -V > /dev/null 2>&1
           if [ $? -ne 0 ] ; then
@@ -879,7 +846,6 @@ function pre_check {
             printf_log "yes\n"
           fi
         else
-          IPSET=2
           IPTABLES=2
         fi
       ;;
@@ -1183,18 +1149,15 @@ function perform_install {
   log "Execution directory $EXEC_DIR"
   cd $TMP_DIR
 
-if [ ! -z ${TMPBDIR_P} ] ; then
-  TMPBDIR_ENV=TMPDIR=${TMPBDIR}
-fi
-
 cat << EOF > tet.user.cfg
 ACTIVATION_KEY={{ activation_key }}
 HTTPS_PROXY=$CL_HTTPS_PROXY
 INSTALLATION_ID=$INSTALLATION_ID
 USER_LABELS=
 UNPRIVILEGED_USER=${UNPRIVILEGED_USER}
-${TMPBDIR_ENV}
 EOF
+[ ! -z ${TMPBDIR_P} ] && echo "TMPDIR=${TMPBDIR}" >> tet.user.cfg
+[ ! -z ${GOLDEN_IMAGE} ] && echo "GOLDEN_HOSTNAME=$(hostname -s)" >> tet.user.cfg
 
 cat << EOF > ta_sensor_ca.pem
 -----BEGIN CERTIFICATE-----
@@ -1737,6 +1700,10 @@ case $i in
   ;;
   --visibility)
   SENSOR_TYPE=sensor
+  shift
+  ;;
+  --golden-image)
+  GOLDEN_IMAGE=1
   shift
   ;;
   *)
