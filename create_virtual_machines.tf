@@ -263,7 +263,7 @@ resource "vsphere_virtual_machine" "app-lb" {
       host        = self.default_ip_address
       type        = "ssh"
       user        = "root"
-      password = var.vcenter_pass
+      password = "C1sco12345!"
     }
   }
   provisioner "local-exec" {
