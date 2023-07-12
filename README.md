@@ -7,7 +7,7 @@ Dependency: DHCP must be present within a port-group in vCenter for deploying SI
 
 ```bash
     wget https://raw.githubusercontent.com/jquintero17/siwapp_vars/main/requirements.sh && chmod +x requirements.sh
-    wget https://raw.githubusercontent.com/jquintero17siwapp_vars/main/configure_semaphore.sh && chmod +x configure_semaphore.sh
+    wget https://raw.githubusercontent.com/jquintero17/siwapp_vars/main/configure_semaphore.sh && chmod +x configure_semaphore.sh
     
     sudo bash requirements.sh
     sudo bash configure_semaphore.sh
