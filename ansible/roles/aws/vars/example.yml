@@ -17,7 +17,9 @@ instance_type: t2.micro
 # RHEL 7.5
 # image: ami-6871a115
 # RHEL 7.6
-image: ami-011b3ccf1bd6db744
+#image: ami-011b3ccf1bd6db744 --- > old image
+ami-078a6a18fb73909b2
+
 
 # names of security groups to be applied to all instances except web tier
 security_group: [group_one, group_two]
