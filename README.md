@@ -6,7 +6,7 @@ Dependency: DHCP must be present within a port-group in vCenter for deploying SI
 2. Run the following commands. These will install any dependencies and the semaphore application + configuration:
 
 ```bash
-    wget https://github.com/jquintero17/SIWAPP-Deployment-Engine/blob/main/requirements.sh && CHMOD +x requirements.sh
+    wget https://github.com/jquintero17/SIWAPP-Deployment-Engine/blob/main/requirements.sh && chmod +x requirements.sh
     wget https://github.com/jquintero17/SIWAPP-Deployment-Engine/blob/main/configure_semaphore.sh && chmod +x configure_semaphore.sh
     
     sudo bash requirements.sh
