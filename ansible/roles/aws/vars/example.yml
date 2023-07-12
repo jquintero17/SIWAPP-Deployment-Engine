@@ -3,7 +3,8 @@
 
 # AWS region expressed like us-east-1 or eu-west-2
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html
-region: us-east-1
+#region: us-east-1
+region: us-west-2
 
 # name of the SSH key with which to deploy the instances
 key_name: 'my SSH key name'
