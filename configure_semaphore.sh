@@ -33,7 +33,7 @@ curl -v -b cookie.txt --location --request POST 'http://127.0.0.1:3000/api/proje
 --data-raw '{
   "name": "vcenter_deploy",
   "project_id": 1,
-  "git_url": "https://github.com/jlunde-cisco/SIWAPP-Deployment-Engine.git",
+  "git_url": "https://github.com/jquintero17/SIWAPP-Deployment-Engine.git",
   "git_branch": "main",
   "ssh_key_id": 1
 }'
@@ -44,7 +44,7 @@ curl -v -b cookie.txt --location --request POST 'http://127.0.0.1:3000/api/proje
 --data-raw '{
     "name": "aws_deploy",
     "project_id": 1,
-    "git_url": "https://github.com/jlunde-cisco/terraform-aws-siwapp.git",
+    "git_url": "https://github.com/jquintero17/terraform-aws-siwapp.git",
     "git_branch": "main",
     "ssh_key_id": 1
 }'
