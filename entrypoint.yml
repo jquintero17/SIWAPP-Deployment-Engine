@@ -23,7 +23,7 @@
 
   - name: Clone repo to a new working directory
     ansible.builtin.git:
-      repo: https://github.com/jlunde-cisco/siwapp_vars.git
+      repo: https://github.com/jquintero17siwapp_vars.git
       dest: /root/{{ dir_name }}/repo
       single_branch: yes
       version: main
